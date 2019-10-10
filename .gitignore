@@ -1,0 +1,12 @@
+modelsim/
+quartus/
+parts_lib/
+work/
+# *.qpg
+# *.qtl
+# *.qdb
+*.mti
+*.bak
+*.ini
+*.wlf
+*.mpf
