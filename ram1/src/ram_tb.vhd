@@ -35,15 +35,15 @@ begin
     process(clk_sig)
     begin
         if clk_sig'event and clk_sig = '1' then
-            if ram_data_in_sig = std_logic_vector(254) then
-                ram_data_in_sig <=  std_logic_vector(unsigned(0));
+            if ram_data_in_sig = std_logic_vector(to_unsigned(255, ram_data_in_sig'length)) then
+                ram_data_in_sig <=  std_logic_vector(to_unsigned(0, ram_data_in_sig'length));
             else
-                ram_data_in_sig <= std_logic_vector(unsigned(ram_data_in_sig + 1));
+                ram_data_in_sig <= std_logic_vector(to_unsigned(((to_integer(unsigned(ram_data_in_sig))) + 1),ram_data_in_sig'length));
             end if;
-            if ram_addr_sig = 7 then
-                ram_addr_sig = 0;
+            if ram_addr_sig = std_logic_vector(to_unsigned(7, ram_addr_sig'length)) then
+                ram_addr_sig <= std_logic_vector(to_unsigned(0, ram_addr_sig'length));
             else 
-                ram_addr_sig <= ram_addr_sig + 1;
+                ram_addr_sig <= std_logic_vector(to_unsigned(((to_integer(unsigned(ram_addr_sig))) + 1),ram_addr_sig'length));
             end if;
         end if;
     end process;
@@ -53,10 +53,10 @@ begin
     -----------------------------------------------------------------------------
     DUT : ram
     port map(
-        clk => clk_sig;
-        ram_addr => ram_addr_sig;   
-        ram_data_in => ram_data_in_sig;
-        ram_data_out => ram_data_out_sig;   
+        clk => clk_sig,
+        ram_addr => ram_addr_sig, 
+        ram_data_in => ram_data_in_sig,
+        ram_data_out => ram_data_out_sig, 
         wr_en => wr_en_sig  
     );
 
