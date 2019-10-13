@@ -14,7 +14,9 @@ architecture arch of ram_tb is
     signal ram_data_in_sig     : std_logic_vector(7 downto 0) := (others=>'0');
     signal ram_data_out_sig    : std_logic_vector(7 downto 0) := (others=>'0');
     signal wr_en_sig           : std_logic := '1';
-
+    type vector_of_vector is array (7 downto 0) of std_logic_vector(7 downto 0);    
+    --Inicializa valores da ram
+    signal ram_sig : vector_of_vector := (others => (others => '0'));
     component ram is
         port (
             clk             : in std_logic;
@@ -45,6 +47,9 @@ begin
             else 
                 ram_addr_sig <= std_logic_vector(to_unsigned(((to_integer(unsigned(ram_addr_sig))) + 1),ram_addr_sig'length));
             end if;
+            if wr_en_sig = '1' then
+                ram_sig(to_integer(unsigned(ram_addr_sig))) <= ram_data_in_sig;
+            end if;
         end if;
     end process;
 
@@ -57,7 +62,7 @@ begin
         ram_addr => ram_addr_sig, 
         ram_data_in => ram_data_in_sig,
         ram_data_out => ram_data_out_sig, 
-        wr_en => wr_en_sig  
+        wr_en => wr_en_sig
     );
 
 end arch;
