@@ -1,6 +1,4 @@
---Descrever uma RAM em VHDL com endereço de entrada e de saída, 
---uma porta para entrada e uma porta para saída. 
---Todos os sinais de entrada devem ser STD_LOGIC_VECTOR.
+--Criar outra RAM para ter apenas uma porta de dados de entrada e saída.
 
 library IEEE;
 	use IEEE.std_logic_1164.all;
@@ -11,8 +9,7 @@ entity ram is
     port (
         clk             : in std_logic;
         ram_addr        : in std_logic_vector(7 downto 0);
-        ram_data_in     : in std_logic_vector(7 downto 0);
-        ram_data_out    : out std_logic_vector(7 downto 0);
+        ram_data        : inout std_logic_vector(7 downto 0);
         wr_en           : in std_logic
     );
 end ram;
@@ -31,10 +28,11 @@ begin
     begin
         if clk'event and clk = '1' then
             if wr_en = '1' then
-                ram(to_integer(unsigned(ram_addr))) <= ram_data_in;
+                ram(to_integer(unsigned(ram_addr))) <= ram_data;
+            else
+                ram_data <= ram(to_integer(unsigned(ram_addr))); 
             end if;
         end if;
     end process RAMProc;
 
-    ram_data_out <= ram(to_integer(unsigned(ram_addr))); 
 end arch;
